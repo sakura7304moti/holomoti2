@@ -1,0 +1,12 @@
+version: '3'
+
+tasks:
+  start:
+    desc: コンテナ再実行
+    cmds:
+      - docker-compose down
+      - docker-compose up -d
+  stop:
+    desc: コンテナの停止
+    cmds:
+      - docker-compose down

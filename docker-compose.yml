@@ -1,0 +1,19 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: sakura0moti
+      POSTGRES_PASSWORD: music0
+      POSTGRES_DB: holomoti
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro  # SQL スクリプトを実行
+    ports:
+      - "1234:5432"
+
+volumes:
+  postgres_data:
