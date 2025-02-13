@@ -11,9 +11,14 @@ services:
       POSTGRES_DB: holomoti
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro  # SQL スクリプトを実行
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro  # SQL スクリプトを実行
     ports:
       - "1234:5432"
-
+  api:
+    build: ./api
+    container_name: api
+    volumes:
+      - ./api:/api
+    working_dir: /api
 volumes:
   postgres_data:

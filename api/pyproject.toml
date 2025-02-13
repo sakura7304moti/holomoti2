@@ -1,0 +1,33 @@
+[project]
+name = "holomoti"
+version = "0.1.0"
+description = "ホロ餅のAPIサーバー"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "beautifulsoup4>=4.12.3",
+    "black>=24.8.0",
+    "chromedriver-autoinstaller>=0.6.4",
+    "cloudscraper>=1.2.71",
+    "ffmpeg-python>=0.2.0",
+    "flask-cors>=5.0.0",
+    "flask>=3.0.3",
+    "jupyterlab>=4.2.5",
+    "llvmlite==0.41.0",
+    "opencv-python>=4.10.0.84",
+    "pandas>=2.2.3",
+    "pillow>=10.4.0",
+    "pixivpy3>=3.7.5",
+    "praw>=7.7.1",
+    "psycopg2-binary>=2.9.9",
+    "pytube>=15.0.0",
+    "pyyaml>=6.0.2",
+    "requests>=2.32.3",
+    "selenium>=4.25.0",
+    "setuptools>=75.1.0",
+    "sqlalchemy>=2.0.35",
+    "tqdm>=4.66.5",
+    "urllib3>=2.2.3",
+    "webdriver-manager>=4.0.2",
+    "yt-dlp>=2024.8.6",
+]
