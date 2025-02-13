@@ -3,7 +3,7 @@ name = "holomoti"
 version = "0.1.0"
 description = "ホロ餅のAPIサーバー"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.11.0, <3.12"
 dependencies = [
     "beautifulsoup4>=4.12.3",
     "black>=24.8.0",
