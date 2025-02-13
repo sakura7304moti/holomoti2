@@ -473,7 +473,7 @@ def update():
             user_to_sql(records_dict)
 
 def test():
-    tag = '#絵かゆ'
+    tag = '#つのまきあーと'
     records_dict = get_tweet(tag, 30)
 
     # データの存在チェック
