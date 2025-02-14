@@ -1,6 +1,7 @@
 version: '3.9'
 
 services:
+  # PostgreSQL
   postgres:
     image: postgres:16
     container_name: postgres_db
@@ -10,10 +11,11 @@ services:
       POSTGRES_PASSWORD: music0
       POSTGRES_DB: holomoti
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro  # SQL スクリプトを実行
+      - postgres_data:/var/lib/postgresql/data # データ永続化
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro  # 初期スクリプト
     ports:
       - "1234:5432"
+  # Flask API Server
   api:
     build: ./api
     container_name: api
@@ -24,5 +26,16 @@ services:
       - "8888:8888"
     command:
       uv run jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token=''
+  # Batch services
+  batch_twitter_scraping:
+    build: ./api
+    container_name: batch_twitter_scraping
+    volumes:
+      - ./api:/batch
+    working_dir: /batch
+    command:
+      uv run /batch/src/batch/twitter_update_batch.py
+    profiles:
+      - batch  # ← 通常の `docker-compose up` では起動しない
 volumes:
   postgres_data:

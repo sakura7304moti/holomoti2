@@ -8,4 +8,6 @@ from src.route.service import twitter_service
 
 
 # ----- main -----
-twitter_service.twitter_scraping_test()
+print("twitterのDB更新バッチ処理実行中...")
+twitter_service.twitter_scraping()
+print("twitterのDB更新バッチ処理OK!!")
