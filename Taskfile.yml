@@ -11,3 +11,8 @@ tasks:
     desc: コンテナの停止
     cmds:
       - docker-compose down
+      
+  batch-twitter:
+    desc: twitterのDBを更新
+    cmds:
+      - docker compose run --rm batch_twitter_scraping

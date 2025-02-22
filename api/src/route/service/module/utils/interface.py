@@ -2,6 +2,8 @@
 twitter
 """
 
+from flask import request
+
 
 class TwitterSearchCondition:
     """

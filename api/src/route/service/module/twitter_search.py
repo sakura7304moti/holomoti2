@@ -16,7 +16,7 @@
 # ツイートの検索ページ数
 
 # ホロライブのファンアートタグの一覧を取得
-
+import pandas as pd
 import math
 from src.route.service.module.utils import const, interface
 
@@ -32,9 +32,7 @@ def _search_tweet_base(condition: interface.TwitterSearchCondition):
             tw.tweet_url as "tweetUrl",
             tw.like_count as "likeCount",
             tw.user_screen_name as "userId",
-            us.name as "userName",
-            us.profile_image as "userImage",
-            tw.created_at as "createdAt"
+            TO_CHAR(tw.created_at, 'YYYY-MM-DD') as "createdAt"
         FROM
             twitter.tweet AS tw
             left join twitter.user as us on tw.user_screen_name = us.screen_name
@@ -81,7 +79,7 @@ def _search_tweet_base(condition: interface.TwitterSearchCondition):
     return query
 
 
-def get_tweets(
+def _get_tweets(
     condition: interface.TwitterSearchCondition, page_no: int, page_size: int
 ):
     query = _search_tweet_base(condition)
@@ -93,12 +91,12 @@ def get_tweets(
     offset %(offset)s limit %(pageSize)s
     """
     args = condition.to_args()
-    args["offset"] = max(page_no, 1) * page_size
+    args["offset"] = (max(page_no, 1) - 1) * page_size
     args["pageSize"] = page_size
     return query_model.execute_df(query, args)
 
 
-def get_tweets_total_count(
+def _get_tweets_total_count(
     condition: interface.TwitterSearchCondition, page_size: int
 ) -> int:
     query = _search_tweet_base(condition)
@@ -110,3 +108,115 @@ def get_tweets_total_count(
     df = query_model.execute_df(query, condition.to_args())
     total = int(df["total"].iloc[0])
     return math.ceil(total / page_size)
+
+
+def _get_media_base(ids: list[int]):
+    """
+    ツイートのIDのリスト -> メディアのリスト
+    """
+    if len(ids) == 0:
+        return pd.DataFrame(
+            columns=["twitterId", "mediaType", "mediaUrl", "thumbnailUrl"]
+        )
+
+    where = f"({', '.join(map(str, ids))}) "
+    query = """
+        SELECT
+            twitter_id as "twitterId",
+            media_type as "mediaType",
+            media_url as "mediaUrl",
+            thumbnail_url as "thumbnailUrl"
+        from twitter.media
+        where twitter_id in 
+    """
+    query += where
+    query += "order by twitter_id, media_url"
+    return query_model.execute_df(query)
+
+
+def _get_user_base(ids: list[str]):
+    """
+    ユーザーのIDのリスト -> ユーザー情報
+    """
+    if len(ids) == 0:
+        return pd.DataFrame(columns=["userId", "userName", "userImage"])
+    where = " ({}) ".format(", ".join(f"'{item}'" for item in ids))
+    query = """
+        SELECT
+            screen_name as "userId",
+            name as "userName",
+            profile_image as "userImage"
+        from twitter.user
+        where screen_name in 
+    """
+    query += where
+    query += "order by screen_name"
+    return query_model.execute_df(query)
+
+
+def _get_hashtag_base(ids: list[int]):
+    """
+    ツイートのIDのリスト -> ハッシュタグのリスト
+    """
+    if len(ids) == 0:
+        return pd.DataFrame(columns=["twitterId", "hashtag"])
+
+    where = f"({', '.join(map(str, ids))}) "
+    query = """
+    SELECT
+        twitter_id as "twitterId",
+        hashtag
+    from twitter.hashtag
+    where twitter_id in 
+    """
+    query += where
+    query += "order by twitter_id, hashtag"
+    return query_model.execute_df(query)
+
+
+def search(condition: interface.TwitterSearchCondition, page_no: int, page_size: int):
+
+    df = _get_tweets(condition, page_no, page_size)
+    total_count = _get_tweets_total_count(condition, page_size)
+
+    ids = df["id"].to_list()
+    media_df = _get_media_base(ids)
+
+    user_ids = df["userId"].to_list()
+    user_df = _get_user_base(user_ids)
+
+    hashtag_df = _get_hashtag_base(ids)
+
+    # 検索結果でまとめる
+    records = []
+    for _, row in df.iterrows():
+        row_dict = {}
+
+        # tweet
+        tweet_dict = row.to_dict()
+        row_dict["tweet"] = tweet_dict
+
+        # media
+        media_dict = media_df[media_df["twitterId"] == int(row["id"])].to_dict(
+            orient="records"
+        )
+        for m in media_dict:
+            m.pop("twitterId")
+        row_dict["media"] = media_dict
+
+        # user
+        user_dict = user_df[user_df["userId"] == str(row["userId"])].iloc[0].to_dict()
+        row_dict["user"] = user_dict
+
+        # hashtag
+        hashtag_dict = hashtag_df[hashtag_df["twitterId"] == int(row["id"])][
+            "hashtag"
+        ].to_list()
+        row_dict["hashtags"] = hashtag_dict
+
+        # tweet key remove
+        row_dict["tweet"].pop("userId")
+
+        # save
+        records.append(row_dict)
+    return {"records": records, "totalCount": total_count}

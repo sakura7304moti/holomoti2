@@ -1,6 +1,7 @@
-version: '3.9'
+#version: '3.9'
 
 services:
+
   # PostgreSQL
   postgres:
     image: postgres:16
@@ -14,7 +15,21 @@ services:
       - postgres_data:/var/lib/postgresql/data # データ永続化
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro  # 初期スクリプト
     ports:
-      - "1234:5432"
+      - "2000:5432"
+      
+      
+  # JupyterLab
+  jupyter:
+    build: ./api
+    container_name: jupyter
+    volumes:
+      - ./api:/api
+    working_dir: /api
+    ports:
+      - "8888:8888"
+    command:
+      uv run jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token=''
+
   # Flask API Server
   api:
     build: ./api
@@ -23,9 +38,11 @@ services:
       - ./api:/api
     working_dir: /api
     ports:
-      - "8888:8888"
+      - "5000:5000"
     command:
-      uv run jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token=''
+      uv run python api.py
+      
+      
   # Batch services
   batch_twitter_scraping:
     build: ./api
