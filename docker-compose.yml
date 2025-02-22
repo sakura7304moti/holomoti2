@@ -42,6 +42,17 @@ services:
     command:
       uv run python api.py
       
+  # Quasar framework webpage
+  quasar:
+    build: ./ui
+    container_name: quasar
+    volumes:
+      - ./ui:/ui
+    working_dir: /ui
+    ports:
+      - "9000:9000"
+    tty: true
+      
       
   # Batch services
   batch_twitter_scraping:
