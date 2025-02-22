@@ -49,5 +49,5 @@ def twitter_search():
 def twitter_tags():
     opt = const.Option()
     df = pd.read_csv(opt.holo_names())
-    records = df.to_json(orient="records", force_ascii=False)
+    records = df.to_dict(orient="records")
     return jsonify(records)
