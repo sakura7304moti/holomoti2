@@ -51,7 +51,6 @@ services:
     working_dir: /ui
     ports:
       - "9000:9000"
-    tty: true
       
       
   # Batch services
