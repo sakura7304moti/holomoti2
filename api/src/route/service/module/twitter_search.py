@@ -174,11 +174,10 @@ def _get_hashtag_base(ids: list[int]):
     return query_model.execute_df(query)
 
 
-def search(condition: interface.TwitterSearchCondition, page_no: int, page_size: int):
-
-    df = _get_tweets(condition, page_no, page_size)
-    total_count = _get_tweets_total_count(condition, page_size)
-
+def _to_search_df(df: pd.DataFrame, total_count: int):
+    """
+    tweet df -> search result
+    """
     ids = df["id"].to_list()
     media_df = _get_media_base(ids)
 
@@ -220,3 +219,124 @@ def search(condition: interface.TwitterSearchCondition, page_no: int, page_size:
         # save
         records.append(row_dict)
     return {"records": records, "totalCount": total_count}
+
+
+def search(condition: interface.TwitterSearchCondition, page_no: int, page_size: int):
+    df = _get_tweets(condition, page_no, page_size)
+    total_count = _get_tweets_total_count(condition, page_size)
+    return _to_search_df(df, total_count)
+
+
+def top_medias():
+    query = """
+    SELECT
+        t.id,
+        t.tweet_text AS "tweetText",
+        t.tweet_url AS "tweetUrl",
+        t.like_count AS "likeCount",
+        t.user_screen_name AS "userId",
+        TO_CHAR(t.created_at, 'YYYY-MM-DD') AS "createdAt"
+    FROM
+        twitter.tweet AS t
+    WHERE
+        t.id IN (
+            SELECT
+                id
+            FROM
+                twitter.tweet AS tw
+            WHERE
+                tw.created_at > CURRENT_TIMESTAMP - cast('2 weeks' AS INTERVAL)
+            ORDER BY
+                random()
+            LIMIT
+                12
+        )
+    """
+    df = query_model.execute_df(query)
+    total_count = 1
+    return _to_search_df(df, total_count)
+
+
+def hot_users():
+    query = """
+    with before_user as (
+        SELECT
+        *
+    FROM
+        (
+            SELECT
+                user_screen_name AS "userId",
+                avg(like_count) AS "likeCount"
+            FROM
+                twitter.tweet
+            WHERE
+                created_at < CURRENT_TIMESTAMP - cast('2 weeks' AS INTERVAL)
+                AND CURRENT_TIMESTAMP - cast('1 months' AS INTERVAL) < created_at
+            GROUP BY
+                user_screen_name
+        )
+    ),
+    after_user as (
+        SELECT
+        *
+    FROM
+        (
+            SELECT
+                user_screen_name AS "userId",
+                avg(like_count) AS "likeCount"
+            FROM
+                twitter.tweet
+            WHERE
+                created_at > CURRENT_TIMESTAMP - cast('2 weeks' AS INTERVAL)
+            GROUP BY
+                user_screen_name
+        )
+    ),
+    hot_user as (
+        SELECT
+        *
+    from after_user
+    WHERE
+        EXISTS
+            (
+                SELECT
+                    1
+                from before_user
+                WHERE
+                    before_user."userId" = after_user."userId"
+                    AND (after_user."likeCount" - before_user."likeCount") > 5000
+            )
+        order by random()
+        limit 5
+    ),
+    A as (
+        SELECT
+            t.id,
+            t.tweet_text AS "tweetText",
+            t.tweet_url AS "tweetUrl",
+            t.like_count AS "likeCount",
+            t.user_screen_name AS "userId",
+            TO_CHAR(t.created_at, 'YYYY-MM-DD') AS "createdAt",
+            row_number() over (partition by t.user_screen_name order by t.created_at desc) as "rank"
+        FROM
+            twitter.tweet AS t
+        WHERE
+            EXISTS
+                (
+                    SELECT
+                        1
+                    from hot_user
+                    where 
+                        t.user_screen_name = hot_user."userId"
+                )
+            and t.like_count > 5000
+        order by t.user_screen_name, t.created_at desc
+    )
+    SELECT
+        *
+    from A
+    where A."rank" < 3
+    """
+    df = query_model.execute_df(query)
+    total_count = 1
+    return _to_search_df(df, total_count)

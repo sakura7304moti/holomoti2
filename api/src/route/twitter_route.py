@@ -51,3 +51,15 @@ def twitter_tags():
     df = pd.read_csv(opt.holo_names())
     records = df.to_dict(orient="records")
     return jsonify(records)
+
+
+@app.route("/twitter/new", methods=["GET"])
+def twitter_new_medias():
+    result = twitter_service.top_medias()
+    return jsonify(result)
+
+
+@app.route("/twitter/hot", methods=["GET"])
+def twitter_hot_users():
+    result = twitter_service.hot_users()
+    return jsonify(result)

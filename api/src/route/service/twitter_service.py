@@ -14,3 +14,11 @@ def twitter_scraping_test():
 
 def search(condition: interface.TwitterSearchCondition, page_no: int, page_size: int):
     return twitter_search.search(condition, page_no, page_size)
+
+
+def top_medias():
+    return twitter_search.top_medias()
+
+
+def hot_users():
+    return twitter_search.hot_users()
