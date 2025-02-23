@@ -246,6 +246,7 @@ def top_medias():
                 twitter.tweet AS tw
             WHERE
                 tw.created_at > CURRENT_TIMESTAMP - cast('2 weeks' AS INTERVAL)
+                and tw.like_count > 1000
             ORDER BY
                 random()
             LIMIT

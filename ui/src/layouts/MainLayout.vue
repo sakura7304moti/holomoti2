@@ -37,7 +37,7 @@
         <!--ヘッダーの右側(PC用)-->
         <div
           class="nav-top fadeDown"
-          style="padding-right: 200px; background-color: rgb(234, 246, 251)"
+          style="padding-right: 100px; background-color: rgb(234, 246, 251)"
         >
           <div class="nav-child">
             <span @click.prevent="pageClick('/', 0)">top</span>
@@ -271,12 +271,12 @@ function usePage(router: Router) {
   const pages = ref([
     {
       id: 1,
-      title: 'fanart',
+      title: 'ファンアート',
       img: 'https://img.icons8.com/ios/250/000000/picture.png',
     },
     {
       id: 2,
-      title: 'movie',
+      title: 'YouTube',
       img: 'https://img.icons8.com/ios/250/000000/tv-show.png',
     },
   ] as headItem[]);
@@ -318,7 +318,7 @@ function usePage(router: Router) {
 }
 body {
   background-image: url('../assets/bg.jpg');
-  color: #333;
+  color: #063f5c;
   font-family: 'Noto Sans JP', sans-serif;
 }
 /*navigation */
@@ -329,16 +329,16 @@ body {
   padding-right: 20px;
   padding-left: 10px;
   width: calc(100% - 200px);
-  max-width: 550px;
+  max-width: 450px;
   height: 100%;
   border-radius: 10px 0 0 10px;
 }
-@media (max-width: 1030px) {
+@media (max-width: 930px) {
   .nav-top {
     display: none;
   }
 }
-@media (max-width: 1030px) {
+@media (max-width: 930px) {
   /*========= ボタンのためのCSS ===============*/
   .top-menu-button {
     position: fixed;
@@ -547,10 +547,10 @@ body {
 }
 .balloon1-top {
   position: absolute;
-  left: -410px;
+  left: -310px;
   margin: 1.5em 0;
   padding: 10px 14px;
-  width: 500px;
+  width: 400px;
   color: #555;
   font-size: 16px;
   background: rgb(234, 246, 251);
@@ -562,7 +562,7 @@ body {
   content: '';
   position: absolute;
   top: -30px;
-  margin-left: 100px;
+  margin-left: 130px;
   border: 15px solid transparent;
   border-bottom: 15px solid rgb(234, 246, 251);
 }
