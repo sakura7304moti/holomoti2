@@ -15,26 +15,46 @@
         </div>
       </div>
 
+      <!--Hot!-->
+      <div class="q-mt-md" style="margin-bottom: 48px">
+        <div class="hot-subtitle sub-title" @click="onClickTopFanart">
+          <span class="cursor-pointer">Hot!<q-tooltip> 再取得する </q-tooltip></span>
+
+          <q-spinner v-if="topFanartLoading" />
+        </div>
+        <div :class="{ fadeRight: !topFanartLoading }">
+          <div class="fanart-base hot-fanart">
+            <div v-for="us in topFanartState.users" :key="us.userId">
+              <user-icon :state="us" class="q-mb-xs" />
+              <div class="row q-gutter-md wrap q-ml-md">
+                <div
+                  v-for="item in topFanartState.records.filter((it) => it.user.userId == us.userId)"
+                  :key="item.tweet.id"
+                >
+                  <tweet-card :state="item" class="tweet-card" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!--New!-->
-      <div class="q-mt-md">
-        <div class="sub-title" @click="onClickNewFanart">
+      <div>
+        <div class="new-subtitle sub-title" @click="onClickNewFanart">
           <span class="cursor-pointer">New!<q-tooltip> 再取得する </q-tooltip></span>
 
           <q-spinner v-if="newFanartLoading" />
         </div>
-        <div class="q-ml-md" v-if="!newFanartLoading">
-          <div class="new-fanart">
+        <div :class="{ fadeRight: !newFanartLoading }">
+          <div class="fanart-base new-fanart">
             <div
-              v-for="item in pageNewFanart"
+              v-for="item in newFanartState.records"
               :key="item.tweet.id"
               style="margin-bottom: 32px; margin-right: 32px"
             >
               <tweet-card :state="item" class="tweet-card" />
             </div>
-          </div>
-
-          <div style="display: flex; justify-content: center; align-items: center">
-            <q-pagination v-model="newFanartPage" :max="4" />
           </div>
         </div>
       </div>
@@ -46,37 +66,46 @@
 import { defineComponent } from 'vue';
 import { useIndexModel } from './useIndexModels';
 import TweetCard from 'src/components/twitter/TweetCard.vue';
+import UserIcon from 'src/components/twitter/UserIcon.vue';
 
 export default defineComponent({
   name: 'index-page',
   components: {
     TweetCard,
+    UserIcon,
   },
   setup() {
     const {
       newFanartLoading,
+      topFanartLoading,
       newFanartPage,
       newFanartState,
       topFanartState,
-      pageNewFanart,
       getNewFanart,
+      getTopFanart,
     } = useIndexModel();
 
     const onClickNewFanart = function () {
       void getNewFanart();
     };
+
+    const onClickTopFanart = function () {
+      void getTopFanart();
+    };
     return {
       newFanartLoading,
+      topFanartLoading,
       newFanartPage,
       newFanartState,
       topFanartState,
-      pageNewFanart,
       onClickNewFanart,
+      onClickTopFanart,
     };
   },
 });
 </script>
 <style>
+@import url('/src/css/fade.css');
 .content-text {
   font-size: 20px;
   color: #063f5c;
@@ -96,12 +125,27 @@ export default defineComponent({
   .sub-title {
     font-size: 1.5em;
     font-weight: 600;
+    border-radius: 10px 10px 0 0;
+  }
+  .new-subtitle {
     color: rgb(178, 222, 224);
+  }
+  .hot-subtitle {
+    color: rgb(251, 222, 229);
+  }
+  .fanart-base {
+    border-radius: 0px 10px 10px 10px;
+    padding: 16px;
   }
   .new-fanart {
     display: flex;
     flex-wrap: wrap;
+    background-color: rgba(234, 246, 251, 0.5);
   }
+  .hot-fanart {
+    background-color: rgba(251, 222, 229, 0.5);
+  }
+
   .tweet-card {
     max-width: 300px;
     width: 100%;
@@ -117,12 +161,16 @@ export default defineComponent({
     }
   }
 }
-@media (max-width: 750px) {
+
+@media (max-width: 800px) {
   .content-text {
     .tweet-card {
       max-width: calc(100vw - 32px);
-      max-height: 700px;
+      max-height: 400px;
     }
   }
+}
+.display-none {
+  display: none;
 }
 </style>

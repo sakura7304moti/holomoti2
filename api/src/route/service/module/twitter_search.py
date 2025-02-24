@@ -250,7 +250,7 @@ def top_medias():
             ORDER BY
                 random()
             LIMIT
-                12
+                3
         )
     """
     df = query_model.execute_df(query)

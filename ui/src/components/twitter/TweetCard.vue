@@ -1,13 +1,13 @@
 <template>
-  <q-card>
-    <q-card-section class="tw-card" style="padding: 0">
+  <div>
+    <div class="tw-card" style="padding: 0">
       <div v-if="st.media[0]" class="tw-card">
         <div v-if="st.media[0].mediaType == 'image'" class="tw-card">
           <img :src="st.media[0].mediaUrl" class="tw-img" />
         </div>
       </div>
-    </q-card-section>
-  </q-card>
+    </div>
+  </div>
 </template>
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
