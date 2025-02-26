@@ -20,7 +20,7 @@
 ※apiのoptionにメンバー名やファンアートタグをまとめたcsvがあり、これを元にDBの更新を行う。
 1. docker-composeのインストール
 1. [task](https://taskfile.dev/installation/)のインストール
-1. CloudFlareでAPIとWEB公開用のトンネルを作成(本番環境のみ)
+1. CloudFlareでAPIとWEB公開用のトンネルを作成
 1. トンネルのトークンの環境変数API_TOKENとUI_TOKENをセット
 1. task build or task deployでコンテナ作成
 1. 定期的にDBの更新バッチ処理を走らせる
