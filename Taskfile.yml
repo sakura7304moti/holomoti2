@@ -2,7 +2,7 @@ version: '3'
 
 tasks:
   build:
-    desc: コンテナ再実行
+    desc: コンテナ実行
     cmds:
       - docker-compose down
       - docker-compose up -d
@@ -12,7 +12,20 @@ tasks:
     cmds:
       - docker-compose down
       
+  ui-build:
+    desc: UIのビルドを実行
+    cmds:
+      - docker-compose run --rm quasar_build
+      
+  deploy:
+    desc: apacheサーバーとcloudflaredトンネルを起動
+    cmds:
+      - docker-compose down
+      - docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
+      
   batch-twitter:
     desc: twitterのDBを更新
     cmds:
-      - docker compose run --rm batch_twitter_scraping
+      - docker-compose run --rm batch_twitter_scraping
+      
+  

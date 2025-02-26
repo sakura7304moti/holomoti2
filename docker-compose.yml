@@ -17,19 +17,6 @@ services:
     ports:
       - "2000:5432"
       
-      
-  # JupyterLab
-  jupyter:
-    build: ./api
-    container_name: jupyter
-    volumes:
-      - ./api:/api
-    working_dir: /api
-    ports:
-      - "8888:8888"
-    command:
-      uv run jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token=''
-
   # Flask API Server
   api:
     build: ./api
@@ -42,16 +29,6 @@ services:
     command:
       uv run python api.py
       
-  # Quasar framework webpage
-  quasar:
-    build: ./ui
-    container_name: quasar
-    volumes:
-      - ./ui:/ui
-    working_dir: /ui
-    ports:
-      - "9000:9000"
-      
       
   # Batch services
   batch_twitter_scraping:
@@ -62,6 +39,17 @@ services:
     working_dir: /batch
     command:
       uv run /batch/src/batch/twitter_update_batch.py
+    profiles:
+      - batch  # ← 通常の `docker-compose up` では起動しない
+      
+  quasar_build:
+    build: ./ui
+    container_name: quasar_build
+    volumes:
+      - ./ui:/ui
+    working_dir: /ui
+    command:
+      npm run build
     profiles:
       - batch  # ← 通常の `docker-compose up` では起動しない
 volumes:

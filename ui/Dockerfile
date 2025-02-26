@@ -15,4 +15,4 @@ RUN npm install
 #RUN npm i @quasar/extras
 
 # 開発サーバーを実行
-CMD ["npm",  "run","dev",  "--hostname", "0.0.0.0"]
+#CMD ["npm",  "run","dev",  "--hostname", "0.0.0.0"]

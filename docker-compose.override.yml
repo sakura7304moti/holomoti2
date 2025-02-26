@@ -1,0 +1,26 @@
+#version: '3.9'
+
+services:
+  # JupyterLab
+  jupyter:
+    build: ./api
+    container_name: jupyter
+    volumes:
+      - ./api:/api
+    working_dir: /api
+    ports:
+      - "8888:8888"
+    command:
+      uv run jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token=''
+      
+  # Quasar framework webpage
+  quasar:
+    build: ./ui
+    container_name: quasar
+    volumes:
+      - ./ui:/ui
+    working_dir: /ui
+    ports:
+      - "9000:9000"
+    command:
+      npm run dev --hostname 0.0.0.0

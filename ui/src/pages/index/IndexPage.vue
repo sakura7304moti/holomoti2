@@ -26,7 +26,7 @@
           <div class="fanart-base hot-fanart">
             <div v-for="us in topFanartState.users" :key="us.userId">
               <user-icon :state="us" class="q-mb-xs" />
-              <div class="row q-gutter-md wrap q-ml-md">
+              <div class="row q-gutter-md wrap q-ml-md q-mb-md">
                 <div
                   v-for="item in topFanartState.records.filter((it) => it.user.userId == us.userId)"
                   :key="item.tweet.id"
@@ -131,7 +131,7 @@ export default defineComponent({
     color: rgb(178, 222, 224);
   }
   .hot-subtitle {
-    color: rgb(251, 222, 229);
+    color: rgb(178, 222, 224);
   }
   .fanart-base {
     border-radius: 0px 10px 10px 10px;
@@ -143,7 +143,7 @@ export default defineComponent({
     background-color: rgba(234, 246, 251, 0.5);
   }
   .hot-fanart {
-    background-color: rgba(251, 222, 229, 0.5);
+    background-color: rgba(234, 246, 251, 0.5);
   }
 
   .tweet-card {

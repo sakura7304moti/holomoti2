@@ -1,0 +1,27 @@
+#version: '3.9'
+
+services:
+  web:
+    build:
+      context: ./web
+    container_name: nginx-server # ここの名前トンネルと連動しているため注意
+    ports:
+      - "8080:80"
+    volumes:
+      - ./ui/dist/spa/:/usr/share/nginx/html  # Quasarのビルド結果をマウント
+    restart: always
+    
+  # cloudflare api runnel
+  api-tunnel:
+    image: cloudflare/cloudflared:latest
+    environment:
+      - API_TOKEN=run
+    command: tunnel --no-autoupdate run --token ${API_TOKEN}
+    restart: always
+    
+  
+  # cloudflare api runnel
+  ui-tunnel:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --no-autoupdate run --token ${UI_TOKEN}
+    restart: always

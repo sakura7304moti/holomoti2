@@ -3,8 +3,8 @@ import type { AxiosResponse } from 'axios';
 import axios from 'axios';
 export class BaseApi {
   private apiEndpoint = function () {
-    if (location.origin.includes('sakura0moti')) {
-      return 'https://holomoti-api.sakura0moti.com';
+    if (location.origin.includes('sakura1moti')) {
+      return 'https://api.sakura1moti.com';
     } else {
       return 'http://localhost:5000';
     }
