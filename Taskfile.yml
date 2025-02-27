@@ -10,6 +10,7 @@ tasks:
   stop:
     desc: コンテナの停止
     cmds:
+      - docker compose stop
       - docker compose down
       
   ui-build:
