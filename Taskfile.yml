@@ -10,23 +10,23 @@ tasks:
   stop:
     desc: コンテナの停止
     cmds:
-      - docker-compose down
+      - docker compose down
       
   ui-build:
     desc: UIのビルドを実行
     cmds:
-      - docker-compose run --rm quasar_build
+      - docker compose run --rm quasar_build
       
   deploy:
     desc: apacheサーバーとcloudflaredトンネルを起動
     cmds:
       - task: ui-build
-      - docker-compose down
-      - docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
+      - docker compose down
+      - docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
       
   batch-twitter:
     desc: twitterのDBを更新
     cmds:
-      - docker-compose run --rm batch_twitter_scraping
+      - docker compose run --rm batch_twitter_scraping
       
   
