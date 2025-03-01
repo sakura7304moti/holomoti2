@@ -21,6 +21,7 @@ services:
   api:
     build: ./api
     container_name: api
+    restart: unless-stopped
     volumes:
       - ./api:/api
     working_dir: /api
