@@ -21,7 +21,7 @@ tasks:
   deploy:
     desc: apacheサーバーとcloudflaredトンネルを起動
     cmds:
-      - task: ui-build
+      #- task: ui-build
       - docker compose down
       - docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
       
@@ -29,5 +29,10 @@ tasks:
     desc: twitterのDBを更新
     cmds:
       - docker compose run --rm batch_twitter_scraping
-      
+  
+  git-pull:
+    desc: 最新バージョンに更新
+    cmds:
+      - git fetch origin master
+      - git reset --hard origin/master
   
