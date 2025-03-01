@@ -5,7 +5,7 @@ FROM node:22
 WORKDIR /ui
 
 # uiフォルダ内の前ファイルをコピー
-COPY . .
+#COPY . .
 
 # パッケージをインストール
 RUN npm install
