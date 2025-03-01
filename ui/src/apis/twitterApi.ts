@@ -1,4 +1,4 @@
-import { BaseApi } from './baseApi';
+import { BaseApi } from 'src/apis/baseApi';
 
 export class TwitterApi extends BaseApi {
   public newFanart(): Promise<SearchVo | null> {

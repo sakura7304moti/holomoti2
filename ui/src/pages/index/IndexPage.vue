@@ -64,7 +64,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useIndexModel } from './useIndexModels';
+import { useIndexModel } from 'src/pages/index/useIndexModels';
 import TweetCard from 'src/components/twitter/TweetCard.vue';
 import UserIcon from 'src/components/twitter/UserIcon.vue';
 
