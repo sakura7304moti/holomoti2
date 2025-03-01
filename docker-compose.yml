@@ -46,8 +46,8 @@ services:
   quasar_build:
     build: ./ui
     container_name: quasar_build
-    #volumes:
-    #  - ./ui:/ui
+    volumes:
+      - ./ui:/ui
     working_dir: /ui
     command:
       npm run build
