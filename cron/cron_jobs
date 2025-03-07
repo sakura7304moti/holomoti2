@@ -1,0 +1,2 @@
+# twitterDB更新バッチ
+15 4 * * * /cron/.venv/bin/python /cron/src/batch/twitter_update_batch.py >> /var/log/cron.log 2>&1

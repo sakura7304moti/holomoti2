@@ -30,6 +30,16 @@ services:
     command:
       uv run python api.py
       
+  # crontab server
+  cron:
+    build:
+      context: .
+      dockerfile: cron/Dockerfile
+    container_name: cron
+    restart: always
+    volumes:
+      - ./api:/cron
+      
       
   # Batch services
   batch_twitter_scraping:
