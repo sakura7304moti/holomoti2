@@ -38,6 +38,14 @@ cloudflaredのコンテナ &rarr; 接続用のコンテナ
 に差し替えばよい。  
 nginxとAPI用にそれぞれ作成する。
 
+## 外部公開
+1. トンネルのトークンを環境変数に設定する。API_TOKENとUI_TOKEN。
+1. プロジェクトのルートで以下のコマンドを実行する
+
+```
+task deploy
+```
+
 ## docker-composeの構成
 
 docker-compose.yml &larr; 共通
