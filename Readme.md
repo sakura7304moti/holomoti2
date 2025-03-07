@@ -4,6 +4,7 @@
 
 全てdocker-composeで構築し、できるだけ簡単にデプロイできる環境を目指す。
 
+
 ## 構成
 
 | 役割 | サービス名 |
@@ -14,6 +15,7 @@
 | 静的サイト表示 | nginx | 
 | 外部公開 | CloudFlare Tunnel |
 | タスク処理 | Task |
+| 定期実行 | cron |
 
 
 ## インストールメモ
@@ -25,22 +27,34 @@
 1. task build or task deployでコンテナ作成
 1. 定期的にDBの更新バッチ処理を走らせる
 
+## トンネル作成
 
-## 環境
+[Cloudflare ZeroTrust公式ドキュメント](https://taskfile.dev/installation/)  
+トンネル作成にあたり、以下のサイトを参考に設定した。     
+[参考リンク](https://growi.cloud/blog/5787)  
+  
+作成時、本番用の設定ファイルで  
+cloudflaredのコンテナ &rarr; 接続用のコンテナ  
+に差し替えばよい。  
+nginxとAPI用にそれぞれ作成する。
 
-開発用
+## docker-composeの構成
+
+docker-compose.yml &larr; 共通
+- DB
+- API
+- cron
+- バッチ処理
+- UIのビルド
+
+docker-compose.override &larr; 開発用
 - jupyter lab
-- flask(localhost)
-- ui(localhost)
-- postgresql
+- quasar dev
 
-本番用
-- flask
-- postgresql
-- nginx
-- api tunnel
-- nginx tunnel
-
+docker-compose.prob &larr; 本番用
+- nginxのwebサーバー
+- APIの外部公開用トンネル
+- webの外部公開用トンネル
 
 ---
 
