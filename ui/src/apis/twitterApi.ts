@@ -12,8 +12,25 @@ export class TwitterApi extends BaseApi {
     const url = this.apiPath(path);
     return this.httpGet<SearchVo>(url);
   }
-}
 
+  public tags(): Promise<FanartTag[] | null> {
+    const path = '/twitter/tags';
+    const url = this.apiPath(path);
+    return this.httpGet<FanartTag[]>(url);
+  }
+
+  public searchFanart(request: SearchRequest, page: number): Promise<SearchVo | null> {
+    let path = '/twitter/search';
+    if (page > 1) {
+      path += `?page=${page}`;
+    }
+    const url = this.apiPath(path);
+    return this.httpPost<SearchRequest, SearchVo>(url, request);
+  }
+}
+/**
+ * 検索結果
+ */
 interface Tweet {
   id: number;
   tweetText: string;
@@ -42,4 +59,23 @@ interface SearchTweetVo {
 interface SearchVo {
   records: SearchTweetVo[];
   totalCount: number;
+}
+
+/**
+ * ファンアートのタグ
+ */
+interface FanartTag {
+  name: string;
+  hashtag: string;
+  url: string;
+}
+
+/**
+ * 検索条件
+ */
+interface SearchRequest {
+  keyword: string | null;
+  hashtag: string | null;
+  likeCount: number | null;
+  userId: string | null;
 }

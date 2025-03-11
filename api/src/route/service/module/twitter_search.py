@@ -39,6 +39,17 @@ def _search_tweet_base(condition: interface.TwitterSearchCondition):
         WHERE
             1 = 1 
     """
+
+    query += """
+        AND tw.id IN (
+        SELECT
+            md.twitter_id
+        from twitter.media as md
+        WHERE
+            md.media_type = 'image'
+        ) 
+    """
+
     if condition.keyword != "":
         query += """
             AND tw.id IN (

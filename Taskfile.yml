@@ -13,6 +13,13 @@ tasks:
       - docker compose stop
       - docker compose down
       
+  api-restart:
+    desc: APIサーバーを再起動する
+    cmds:
+      - docker compose stop api
+      - docker compose rm api
+      - docker compose build --no-cache api
+      
   ui-build:
     desc: UIのビルドを実行
     cmds:
