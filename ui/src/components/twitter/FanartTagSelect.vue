@@ -96,9 +96,9 @@ export default defineComponent({
     void getNames();
 
     // selectedValueをmodelValueに反映
-    const selectedValue = ref(props.modelValue);
+    const selectedValue = ref(props.modelValue.replace('#', ''));
     watch(selectedValue, (newValue) => {
-      emit('update:modelValue', newValue);
+      emit('update:modelValue', newValue.replace('#', ''));
     });
     return {
       /*props */

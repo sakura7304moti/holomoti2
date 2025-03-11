@@ -25,7 +25,9 @@ export const useTwitterSearchModel = function () {
       .then((response) => {
         if (response) {
           console.log('search response', response);
-          dataState.value.tweets.splice(0);
+          if (page.value <= 1) {
+            dataState.value.tweets.splice(0);
+          }
           response.records.forEach((r) => dataState.value.tweets.push(r));
           dataState.value.totalCount = response.totalCount;
         }
@@ -44,6 +46,7 @@ export const useTwitterSearchModel = function () {
     isLoading,
     page,
     condition,
+    dataState,
     search,
   };
 };
