@@ -22,7 +22,6 @@
         </div>
       </div>
     </q-form>
-    <!--メディア表示-->
     <div>
       <div v-for="item in dataState.tweets" :key="item.tweet.id" style="margin-bottom: 60px">
         <q-chat-message
