@@ -60,18 +60,7 @@ services:
       - ./ui:/ui
     working_dir: /ui
     command:
-      npm run build
-    profiles:
-      - batch  # ← 通常の `docker-compose up` では起動しない
-      
-  quasar_init:
-    build: ./ui
-    container_name: quasar_init
-    volumes:
-      - ./ui:/ui
-    working_dir: /ui
-    command:
-      npm init quasar
+      npm --version
     profiles:
       - batch  # ← 通常の `docker-compose up` では起動しない
 volumes:
