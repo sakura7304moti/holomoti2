@@ -71,7 +71,7 @@ services:
       - ./ui:/ui
     working_dir: /ui
     command:
-      npm run init
+      npm init quasar
     profiles:
       - batch  # ← 通常の `docker-compose up` では起動しない
 volumes:
