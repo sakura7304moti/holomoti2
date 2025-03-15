@@ -32,6 +32,14 @@ tasks:
       - docker compose down
       - docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d --no-cache
       
+  stop-deploy:
+    desc: deployしたコンテナの停止
+    cmds:
+      - docker compose stop
+      - docker stop holomoti2-ui-tunnel-1 holomoti2-api-tunnel-1 nginx-server
+      - docker rm holomoti2-ui-tunnel-1 holomoti2-api-tunnel-1 nginx-server
+      - docker compose down
+      
   batch-twitter:
     desc: twitterのDBを更新
     cmds:
