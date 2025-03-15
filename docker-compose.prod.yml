@@ -8,7 +8,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./ui/dist/spa/:/usr/share/nginx/html  # Quasarのビルド結果をマウント
+      - ./web/dist/spa/:/usr/share/nginx/html  # Quasarのビルド結果をマウント
     restart: always
     
   # cloudflare api runnel

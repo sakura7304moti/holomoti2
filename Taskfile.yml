@@ -24,6 +24,8 @@ tasks:
     desc: UIのビルドを実行
     cmds:
       - docker compose run --rm quasar_build
+      - rm -rf ./web/dist
+      - cp -r ui/dist ./web/dist
       
   deploy:
     desc: apacheサーバーとcloudflaredトンネルを起動
