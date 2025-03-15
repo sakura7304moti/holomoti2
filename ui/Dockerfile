@@ -9,9 +9,9 @@ COPY . .
 
 # パッケージをインストール
 RUN npm install
-#RUN npm i -g @quasar/cli
+RUN npm i -g @quasar/cli
 #RUN npm i @quasar/app-vite
-#RUN npm i quasar 
+RUN npm i quasar 
 #RUN npm i @quasar/extras
 
 # 開発サーバーを実行
