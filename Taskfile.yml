@@ -4,8 +4,8 @@ tasks:
   build:
     desc: コンテナ実行
     cmds:
-      - docker-compose down
-      - docker-compose up -d
+      - docker compose down
+      - docker compose up -d
       
   stop:
     desc: コンテナの停止
