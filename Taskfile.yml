@@ -30,7 +30,7 @@ tasks:
     cmds:
       #- task: ui-build
       - docker compose down
-      - docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
+      - docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d --no-cache
       
   batch-twitter:
     desc: twitterのDBを更新

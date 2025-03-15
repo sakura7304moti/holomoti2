@@ -59,8 +59,7 @@ services:
     volumes:
       - ./ui:/ui
     working_dir: /ui
-    command:
-      npm run build
+    tty: true
     profiles:
       - batch  # ← 通常の `docker-compose up` では起動しない
 volumes:
