@@ -31,8 +31,8 @@ tasks:
     desc: apacheサーバーとcloudflaredトンネルを起動
     cmds:
       - task: ui-build
-      - docker stop api cron postgres_db holomoti2-api-tunnel-1 holomoti2-ui-tunnel-1
-      - docker rm api cron postgres_db holomoti2-api-tunnel-1 holomoti2-ui-tunnel-1
+      #- docker stop api cron postgres_db holomoti2-api-tunnel-1 holomoti2-ui-tunnel-1
+      #- docker rm api cron postgres_db holomoti2-api-tunnel-1 holomoti2-ui-tunnel-1
       - docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
       
   stop-deploy:
